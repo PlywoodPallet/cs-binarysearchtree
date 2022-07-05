@@ -1,9 +1,14 @@
 class Node
-
   attr_accessor :value, :left_node, :right_node
 
-  def initialize
-    @value = nil
+  include Comparable
+
+  def <=>(other)
+    @value <=> other.value
+  end
+
+  def initialize (value = nil)
+    @value = value
     @left_node = nil
     @right_node = nil
   end
@@ -27,4 +32,3 @@ class Tree
 
 
 end
-puts a_node
