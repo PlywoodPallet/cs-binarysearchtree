@@ -1,17 +1,18 @@
 class Node
   attr_accessor :value, :left_node, :right_node
 
-  include Comparable
-
-  def <=>(other)
-    @value <=> other.value
-  end
+  # include Comparable
 
   def initialize (value = nil)
     @value = value
     @left_node = nil
     @right_node = nil
   end
+
+  # # Comparable
+  # def <=>(other)
+  #   @value <=> other.value
+  # end
 
   def to_s
     output = "[value: #{value} left node: #{left_node} right node: #{right_node}]"
@@ -26,7 +27,7 @@ class Tree
   end
 
   # build a balanced search tree with array as input
-  # assumption: array already has duplicates removed
+  # assumption: array is sorted and contains no duplicates
 
   # Recursion:
   # calculate mid of left subarray and make it root of left subtree of original root
@@ -47,6 +48,8 @@ class Tree
     root
   end
 
+  # copy/pasted code from Odin project description
+  # for visualizing trees
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right_node, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_node
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -54,10 +57,38 @@ class Tree
   end
 
 
+  def insert(value)
+    @root = insertRecursive(@root, value)
+  end
+
+  def insertRecursive(node, value)
+    
+    # base case: current node is empty, which means we reached a leaf. Return a new Node object with value
+    # also inserts a new node into an empty tree
+    if (node.value == nil)
+      node = Node.new(value)
+      return node
+    end
+
+    # recursive case: judge current node value (start with root). Go left if inserted value is less than the current value. Go right if the inserted value is more than the current value
+    # if the value exists, return nil at terminate the method# 
+    if (value < node.value)
+      node.left_node = insertRecursive(node.left_node, value)
+    elsif (value > node.value)
+      node.right_node = insertRecursive(node.right_node, value)
+    end
+
+    return node
+  end
+
 end
 
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
 a_tree = Tree.new(array)
+
+a_tree.pretty_print
+
+a_tree.insert(99999999)
 
 a_tree.pretty_print
