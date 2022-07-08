@@ -22,6 +22,8 @@ end
 
 # I hate recursion. It's difficult to debug
 class Tree
+  attr_accessor :root
+  
   def initialize(array)
     #sort array and remove duplicates 
     array = array.sort.uniq
@@ -96,7 +98,7 @@ class Tree
   # Need to cover three cases
   # 1) Node to be deleted is a leaf
   # 2) Node to be deleted only had one child. Copy the child to the node and delete the child
-  # 3) Node to be deleted has two children. Find the node that is slightly bigger (go to right subtree, then get the left most subtree - not necessarily a leaf)
+  # 3) Node to be deleted has two children. 
   def delete_recursive(node, value)
   
     # base case: node is null, meaning a leaf has been reached. Terminate recursion
@@ -121,9 +123,31 @@ class Tree
         elsif (node.right_node == nil)
           return node.left_node
       end
+
+      # Node with two children: 
+      # 1) Find the inorder predecessor in the right subtree (Find the node that is slightly bigger (go to right subtree, then get the left most subtree - not necessarily a leaf)). 
+      # 2) Replace the value of the node with the next biggest node value.
+      new_minimum_value = minimum_value(node.right_node)
+      node.value = new_minimum_value
+
+      # 3) Delete old position of the next biggest node value with another delete_recursive call, which takes it's possible children into account
+      node.right_node = delete_recursive(node.right_node, new_minimum_value)
     end
 
     return node
+  end
+
+  # Find the smallest value in a tree
+  # Possible bug: finding min value on the root of a tree doesn't return the correct result, but performing method on left and right subtrees works. The latter is all that is needed for #delete_recursive to work on nodes with two children
+  def minimum_value(node)
+    min_value = node.value
+
+    unless (node.left_node == nil)
+        min_value = node.left_node.value
+        node = node.left_node
+    end
+    
+    min_value
   end
 
 end
@@ -134,6 +158,8 @@ a_tree = Tree.new(array)
 
 a_tree.pretty_print
 
-a_tree.delete(3)
+# puts a_tree.minimum_value(a_tree.root.left_node)
+
+a_tree.delete(9)
 
 a_tree.pretty_print
