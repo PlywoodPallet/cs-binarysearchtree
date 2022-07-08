@@ -19,10 +19,18 @@ class Node
   end
 end
 
+
+# I hate recursion. It's difficult to debug
 class Tree
   def initialize(array)
     #sort array and remove duplicates 
-    @root = build_tree(array.sort.uniq, 0, array.length-1)
+    array = array.sort.uniq
+
+    @root = build_tree(array, 0, array.length-1)
+    
+    # p "Sorted Array: #{array.sort.uniq}"
+    # p mid = (0+array.length-1)/2
+    # p "Mid value: #{array[mid]}"
 
   end
 
@@ -48,8 +56,7 @@ class Tree
     root
   end
 
-  # copy/pasted code from Odin project description
-  # for visualizing trees
+  # for visualizing trees. copy/pasted code from Odin project description
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right_node, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_node
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -65,13 +72,13 @@ class Tree
     
     # base case: current node is empty, which means we reached a leaf. Return a new Node object with value
     # also inserts a new node into an empty tree
-    if (node.value == nil)
+    if (node == nil) 
       node = Node.new(value)
       return node
     end
 
     # recursive case: judge current node value (start with root). Go left if inserted value is less than the current value. Go right if the inserted value is more than the current value
-    # if the value exists, return nil at terminate the method# 
+    # if the value exists, return nil and terminate the method
     if (value < node.value)
       node.left_node = insertRecursive(node.left_node, value)
     elsif (value > node.value)
@@ -79,6 +86,16 @@ class Tree
     end
 
     return node
+  end
+
+  def delete(value)
+    @root = deleteRecursive(@root, value)
+  end
+
+  def deleteRecursive(node, value)
+  
+    #base case: node is
+
   end
 
 end
@@ -89,6 +106,6 @@ a_tree = Tree.new(array)
 
 a_tree.pretty_print
 
-a_tree.insert(99999999)
+a_tree.insert(9999)
 
 a_tree.pretty_print
