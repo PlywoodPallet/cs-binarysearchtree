@@ -65,10 +65,10 @@ class Tree
 
 
   def insert(value)
-    @root = insertRecursive(@root, value)
+    @root = insert_recursive(@root, value)
   end
 
-  def insertRecursive(node, value)
+  def insert_recursive(node, value)
     
     # base case: current node is empty, which means we reached a leaf. Return a new Node object with value
     # also inserts a new node into an empty tree
@@ -80,39 +80,47 @@ class Tree
     # recursive case: judge current node value (start with root). Go left if inserted value is less than the current value. Go right if the inserted value is more than the current value
     # if the value exists, return nil and terminate the method
     if (value < node.value)
-      node.left_node = insertRecursive(node.left_node, value)
+      node.left_node = insert_recursive(node.left_node, value)
     elsif (value > node.value)
-      node.right_node = insertRecursive(node.right_node, value)
+      node.right_node = insert_recursive(node.right_node, value)
     end
 
     return node
   end
 
   def delete(value)
-    @root = deleteRecursive(@root, value)
+    @root = delete_recursive(@root, value)
   end
 
   # can only delete leaves at the moment
-  def deleteRecursive(node, value)
+  # Need to cover three cases
+  # 1) Node to be deleted is a leaf
+  # 2) Node to be deleted only had one child. Copy the child to the node and delete the child
+  # 3) Node to be deleted has two children. Find the node that is slightly bigger (go to right subtree, then get the left most subtree - not necessarily a leaf)
+  def delete_recursive(node, value)
   
     # base case: node is null, meaning a leaf has been reached. Terminate recursion
-    # is this needed? seems to work find without this 
-    # if (node == nil) 
-    #   return node
-    # end
-
-    # base case: node has been found with correct value
-    # does not delete yet, just a test to see if code can find a value
-    if (node.value == value)
-      puts "Value has been found"
-      return nil
+    if (node == nil) 
+      return node
     end
 
     # recursive case: go left or right
     if (value < node.value)
-      node.left_node = deleteRecursive(node.left_node, value)
+      node.left_node = delete_recursive(node.left_node, value)
     elsif (value > node.value)
-      node.right_node = deleteRecursive(node.right_node, value)
+      node.right_node = delete_recursive(node.right_node, value)
+    end
+
+    # base case: node has been found with correct value
+    if (node.value == value)
+        
+      # node with only one child will be replaced with non-nil child
+      # node with no children will be replaced with nil (both left_node and right_node will be nil)
+      if (node.left_node == nil)
+          return node.right_node
+        elsif (node.right_node == nil)
+          return node.left_node
+      end
     end
 
     return node
