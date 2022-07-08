@@ -92,10 +92,30 @@ class Tree
     @root = deleteRecursive(@root, value)
   end
 
+  # can only delete leaves at the moment
   def deleteRecursive(node, value)
   
-    #base case: node is
+    # base case: node is null, meaning a leaf has been reached. Terminate recursion
+    # is this needed? seems to work find without this 
+    # if (node == nil) 
+    #   return node
+    # end
 
+    # base case: node has been found with correct value
+    # does not delete yet, just a test to see if code can find a value
+    if (node.value == value)
+      puts "Value has been found"
+      return nil
+    end
+
+    # recursive case: go left or right
+    if (value < node.value)
+      node.left_node = deleteRecursive(node.left_node, value)
+    elsif (value > node.value)
+      node.right_node = deleteRecursive(node.right_node, value)
+    end
+
+    return node
   end
 
 end
@@ -106,6 +126,6 @@ a_tree = Tree.new(array)
 
 a_tree.pretty_print
 
-a_tree.insert(9999)
+a_tree.delete(3)
 
 a_tree.pretty_print
