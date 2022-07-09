@@ -182,10 +182,13 @@ class Tree
     # initialize the queue and push the root into it
     node_queue = []
     node_queue.push(@root) 
+    
+    no_block_result = [] # output array when no block is given 
 
     until (node_queue.length == 0)
       current_node = node_queue.shift
-      yield (current_node.value)
+      yield (current_node.value) if block_given?
+      no_block_result.push(current_node.value)
 
       unless (current_node.left_node.nil?)
         node_queue.push(current_node.left_node) 
@@ -195,8 +198,21 @@ class Tree
         node_queue.push(current_node.right_node) 
       end
     end
-
+    
+    return no_block_result unless block_given?
   end
+
+  # # left, root, right
+  # def inorder
+  # end
+
+  # # root, left, right
+  # def preorder
+  # end
+
+  # # left, right, root
+  # def postorder
+  # end
 
 end
 
@@ -206,4 +222,4 @@ a_tree = Tree.new(array)
 
 a_tree.pretty_print
 
-a_tree.level_order {|n| puts n}
+a_tree.level_order {|n| puts "#{n} stuff"}
