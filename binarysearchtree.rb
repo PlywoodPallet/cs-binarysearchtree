@@ -175,6 +175,29 @@ class Tree
     end
   end
 
+  # traverse the tree in breadth-first level order and yield each node to the provided block 
+  # breath-first traversal: use a queue (first in first out). Visit a node, enqueue its children. Shift the first node in the queue, grab the value until the queue is empty. 
+  def level_order
+
+    # initialize the queue and push the root into it
+    node_queue = []
+    node_queue.push(@root) 
+
+    until (node_queue.length == 0)
+      current_node = node_queue.shift
+      yield (current_node.value)
+
+      unless (current_node.left_node.nil?)
+        node_queue.push(current_node.left_node) 
+      end
+      
+      unless (current_node.right_node.nil?)
+        node_queue.push(current_node.right_node) 
+      end
+    end
+
+  end
+
 end
 
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
@@ -183,6 +206,4 @@ a_tree = Tree.new(array)
 
 a_tree.pretty_print
 
-puts a_tree.find(1)
-
-a_tree.pretty_print
+a_tree.level_order {|n| puts n}
