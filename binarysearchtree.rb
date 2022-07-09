@@ -20,7 +20,7 @@ class Node
 end
 
 
-# I hate recursion. It's difficult to debug
+# I hate recursion. It's difficult to debug. I feel like this makes it hard to code incrementally. I feel pressured to write a working solution all in one go, which is not how I code. I like to slowly add snippets of code which I test along the way. 
 class Tree
   attr_accessor :root
   
@@ -137,7 +137,7 @@ class Tree
     return node
   end
 
-  # Find the smallest value in a tree
+  # Find the smallest value in a tree. Helper function for #delete_recursive
   # Possible bug: finding min value on the root of a tree doesn't return the correct result, but performing method on left and right subtrees works. The latter is all that is needed for #delete_recursive to work on nodes with two children
   def minimum_value(node)
     min_value = node.value
@@ -150,6 +150,31 @@ class Tree
     min_value
   end
 
+  def find(value)
+    find_recursive(@root, value)
+  end
+
+  # If value exists in a node, return the node. Else return nil
+  def find_recursive(node, value)
+    # base case: current node is empty, which means we reached a leaf. Return nil
+    if (node == nil) 
+      return nil
+    end
+
+    # base case: value has been found, return the node
+    if (node.value == value)
+      return node
+    end
+
+    # recursive case: judge current node value (start with root). Go left if query value is less than the current value. Go right if the query value is more than the current value
+    # if the value exists, return nil and terminate the method
+    if (value < node.value)
+      find_recursive(node.left_node, value)
+    elsif (value > node.value)
+      find_recursive(node.right_node, value)
+    end
+  end
+
 end
 
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
@@ -158,8 +183,6 @@ a_tree = Tree.new(array)
 
 a_tree.pretty_print
 
-# puts a_tree.minimum_value(a_tree.root.left_node)
-
-a_tree.delete(9)
+puts a_tree.find(1)
 
 a_tree.pretty_print
