@@ -65,7 +65,7 @@ class Tree
     pretty_print(node.left_node, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left_node
   end
 
-
+  # use a default value and merge method with below
   def insert(value)
     @root = insert_recursive(@root, value)
   end
@@ -90,6 +90,7 @@ class Tree
     return node
   end
 
+  # use a default value and merge method with below
   def delete(value)
     @root = delete_recursive(@root, value)
   end
@@ -150,6 +151,7 @@ class Tree
     min_value
   end
 
+  # use a default value and merge method with below
   def find(value)
     find_recursive(@root, value)
   end
@@ -202,17 +204,39 @@ class Tree
     return no_block_result unless block_given?
   end
 
-  # # left, root, right
-  # def inorder
-  # end
+  # left, root, right
+  def inorder (node = @root, &block)
+    if (node == nil)
+      return nil
+    end
+    
+    inorder(node.left_node, &block)
+    yield(node)
+    inorder(node.right_node, &block)
 
-  # # root, left, right
-  # def preorder
-  # end
+  end
 
-  # # left, right, root
-  # def postorder
-  # end
+  # root, left, right
+  def preorder (node = @root, &block)
+    if (node == nil)
+      return nil
+    end
+    
+    yield(node)
+    preorder(node.left_node, &block)
+    preorder(node.right_node, &block)
+  end
+
+  # left, right, root
+  def postorder (node = @root, &block)
+    if (node == nil)
+      return nil
+    end
+
+    postorder(node.left_node, &block)
+    postorder(node.right_node, &block)
+    yield(node)
+  end
 
 end
 
@@ -222,4 +246,5 @@ a_tree = Tree.new(array)
 
 a_tree.pretty_print
 
-a_tree.level_order {|n| puts "#{n} stuff"}
+a_tree.postorder {|n| puts n}
+
