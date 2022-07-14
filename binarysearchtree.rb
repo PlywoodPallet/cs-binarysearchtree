@@ -1,3 +1,5 @@
+require 'pry-byebug'
+
 class Node
   attr_accessor :value, :left_node, :right_node
 
@@ -248,6 +250,32 @@ class Tree
       height(node.right_node, counter+1)
     end
   end
+
+  # Give a node. Number of steps to the root.
+  # Start at the root then step towards the given node
+  def depth(node_query, node = @root, counter = 0)
+
+    # Base case
+    if (node == nil)
+      return nil
+    end
+
+    # base case: reached the correct node
+    # implementing Comparable would make the comparison more elegant
+    if (node.value == node_query.value)
+      return counter
+    end
+
+    # recursive case: check left subtree
+    ans = depth(node_query, node.left_node, counter+1)
+
+    # recursive case: if no result, check right subtree
+    if (ans == nil)
+      ans = depth(node_query, node.right_node, counter+1)
+    end
+
+    return ans
+  end
   
 
 
@@ -261,7 +289,7 @@ a_tree = Tree.new(array)
 a_tree.pretty_print
 
 
-puts a_node = a_tree.find(8)
+puts a_node = a_tree.find(23)
 
-puts "height: #{a_tree.height(a_node)}"
+puts "depth: #{a_tree.depth(a_node)}"
 
