@@ -65,12 +65,7 @@ class Tree
     pretty_print(node.left_node, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left_node
   end
 
-  # use a default value and merge method with below
-  def insert(value)
-    @root = insert_recursive(@root, value)
-  end
-
-  def insert_recursive(node, value)
+  def insert(node = @root, value)
     
     # base case: current node is empty, which means we reached a leaf. Return a new Node object with value
     # also inserts a new node into an empty tree
@@ -82,17 +77,12 @@ class Tree
     # recursive case: judge current node value (start with root). Go left if inserted value is less than the current value. Go right if the inserted value is more than the current value
     # if the value exists, return nil and terminate the method
     if (value < node.value)
-      node.left_node = insert_recursive(node.left_node, value)
+      node.left_node = insert(node.left_node, value)
     elsif (value > node.value)
-      node.right_node = insert_recursive(node.right_node, value)
+      node.right_node = insert(node.right_node, value)
     end
 
     return node
-  end
-
-  # use a default value and merge method with below
-  def delete(value)
-    @root = delete_recursive(@root, value)
   end
 
   # can only delete leaves at the moment
@@ -100,7 +90,7 @@ class Tree
   # 1) Node to be deleted is a leaf
   # 2) Node to be deleted only had one child. Copy the child to the node and delete the child
   # 3) Node to be deleted has two children. 
-  def delete_recursive(node, value)
+  def delete(node = @root, value)
   
     # base case: node is null, meaning a leaf has been reached. Terminate recursion
     if (node == nil) 
@@ -109,9 +99,9 @@ class Tree
 
     # recursive case: go left or right
     if (value < node.value)
-      node.left_node = delete_recursive(node.left_node, value)
+      node.left_node = delete(node.left_node, value)
     elsif (value > node.value)
-      node.right_node = delete_recursive(node.right_node, value)
+      node.right_node = delete(node.right_node, value)
     end
 
     # base case: node has been found with correct value
@@ -132,7 +122,7 @@ class Tree
       node.value = new_minimum_value
 
       # 3) Delete old position of the next biggest node value with another delete_recursive call, which takes it's possible children into account
-      node.right_node = delete_recursive(node.right_node, new_minimum_value)
+      node.right_node = delete(node.right_node, new_minimum_value)
     end
 
     return node
@@ -151,13 +141,8 @@ class Tree
     min_value
   end
 
-  # use a default value and merge method with below
-  def find(value)
-    find_recursive(@root, value)
-  end
-
   # If value exists in a node, return the node. Else return nil
-  def find_recursive(node, value)
+  def find(node = @root, value)
     # base case: current node is empty, which means we reached a leaf. Return nil
     if (node == nil) 
       return nil
@@ -171,9 +156,9 @@ class Tree
     # recursive case: judge current node value (start with root). Go left if query value is less than the current value. Go right if the query value is more than the current value
     # if the value exists, return nil and terminate the method
     if (value < node.value)
-      find_recursive(node.left_node, value)
+      find(node.left_node, value)
     elsif (value > node.value)
-      find_recursive(node.right_node, value)
+      find(node.right_node, value)
     end
   end
 
@@ -245,6 +230,4 @@ array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 a_tree = Tree.new(array)
 
 a_tree.pretty_print
-
-a_tree.postorder {|n| puts n}
 
