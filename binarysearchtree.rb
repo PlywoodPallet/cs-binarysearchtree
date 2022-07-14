@@ -231,6 +231,27 @@ class Tree
     no_block_result unless block_given? 
   end
 
+  # Given a node. Longest number of steps to a leaf node
+  def height(node, counter = 0)
+
+    # base case: reached a leaf node
+    if (node.left_node.nil? && node.right_node.nil?)
+      return counter
+    end
+
+    # recursive case: keep going left and right, each time incrementing the counter
+    if (node.left_node != nil)
+      height(node.left_node, counter+1)
+    end
+
+    if (node.right_node != nil)
+      height(node.right_node, counter+1)
+    end
+  end
+  
+
+
+
 end
 
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
@@ -239,5 +260,8 @@ a_tree = Tree.new(array)
 
 a_tree.pretty_print
 
-puts a_tree.postorder
+
+puts a_node = a_tree.find(8)
+
+puts "height: #{a_tree.height(a_node)}"
 
