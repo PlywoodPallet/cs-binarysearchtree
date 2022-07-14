@@ -175,7 +175,7 @@ class Tree
     until (node_queue.length == 0)
       current_node = node_queue.shift
       yield (current_node.value) if block_given?
-      no_block_result.push(current_node.value)
+      no_block_result.push(current_node.value) unless block_given?
 
       unless (current_node.left_node.nil?)
         node_queue.push(current_node.left_node) 
@@ -186,41 +186,49 @@ class Tree
       end
     end
     
-    return no_block_result unless block_given?
+    no_block_result unless block_given?
   end
 
   # left, root, right
-  def inorder (node = @root, &block)
+  def inorder (node = @root, no_block_result = [], &block)
     if (node == nil)
       return nil
     end
     
-    inorder(node.left_node, &block)
-    yield(node)
-    inorder(node.right_node, &block)
+    inorder(node.left_node, no_block_result, &block)
+    yield(node) if block_given?
+    no_block_result.push(node) unless block_given? 
+    inorder(node.right_node, no_block_result, &block)
 
+    no_block_result unless block_given? 
   end
 
   # root, left, right
-  def preorder (node = @root, &block)
+  def preorder (node = @root, no_block_result = [], &block)
     if (node == nil)
       return nil
     end
     
-    yield(node)
+    yield(node) if block_given?
+    no_block_result.push(node) unless block_given? 
     preorder(node.left_node, &block)
     preorder(node.right_node, &block)
+
+    no_block_result unless block_given? 
   end
 
   # left, right, root
-  def postorder (node = @root, &block)
+  def postorder (node = @root, no_block_result = [], &block)
     if (node == nil)
       return nil
     end
 
     postorder(node.left_node, &block)
     postorder(node.right_node, &block)
-    yield(node)
+    yield(node) if block_given?
+    no_block_result.push(node) unless block_given? 
+
+    no_block_result unless block_given? 
   end
 
 end
@@ -230,4 +238,6 @@ array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 a_tree = Tree.new(array)
 
 a_tree.pretty_print
+
+puts a_tree.postorder
 
