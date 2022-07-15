@@ -256,7 +256,7 @@ class Tree
   def depth(node_query, node = @root, counter = 0)
 
     # Base case
-    if (node == nil)
+    if (node.nil?)
       return nil
     end
 
@@ -270,15 +270,12 @@ class Tree
     ans = depth(node_query, node.left_node, counter+1)
 
     # recursive case: if no result, check right subtree
-    if (ans == nil)
+    if (ans.nil?)
       ans = depth(node_query, node.right_node, counter+1)
     end
 
     return ans
   end
-  
-
-
 
 end
 
@@ -291,5 +288,5 @@ a_tree.pretty_print
 
 puts a_node = a_tree.find(23)
 
-puts "depth: #{a_tree.depth(a_node)}"
+puts a_tree.balanced?
 
