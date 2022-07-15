@@ -31,11 +31,6 @@ class Tree
     array = array.sort.uniq
 
     @root = build_tree(array)
-    
-    # p "Sorted Array: #{array.sort.uniq}"
-    # p mid = (0+array.length-1)/2
-    # p "Mid value: #{array[mid]}"
-
   end
 
   # build a balanced search tree with array as input
@@ -199,7 +194,7 @@ class Tree
     
     inorder(node.left_node, no_block_result, &block)
     yield(node) if block_given?
-    no_block_result.push(node) unless block_given? 
+    no_block_result.push(node.value) unless block_given? 
     inorder(node.right_node, no_block_result, &block)
 
     no_block_result unless block_given? 
@@ -212,7 +207,7 @@ class Tree
     end
     
     yield(node) if block_given?
-    no_block_result.push(node) unless block_given? 
+    no_block_result.push(node.value) unless block_given? 
     preorder(node.left_node, &block)
     preorder(node.right_node, &block)
 
@@ -228,7 +223,7 @@ class Tree
     postorder(node.left_node, &block)
     postorder(node.right_node, &block)
     yield(node) if block_given?
-    no_block_result.push(node) unless block_given? 
+    no_block_result.push(node.value) unless block_given? 
 
     no_block_result unless block_given? 
   end
@@ -299,9 +294,6 @@ a_tree = Tree.new(array)
 
 a_tree.pretty_print
 
-
-# puts a_node = a_tree.find(23)
-
-# puts a_tree.height(a_node)
+a_tree.rebalance!
 
 a_tree.pretty_print
