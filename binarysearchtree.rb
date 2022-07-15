@@ -194,7 +194,7 @@ class Tree
     
     inorder(node.left_node, no_block_result, &block)
     yield(node) if block_given?
-    no_block_result.push(node.value) unless block_given? 
+    no_block_result.push(node.value) 
     inorder(node.right_node, no_block_result, &block)
 
     no_block_result unless block_given? 
@@ -207,9 +207,9 @@ class Tree
     end
     
     yield(node) if block_given?
-    no_block_result.push(node.value) unless block_given? 
-    preorder(node.left_node, &block)
-    preorder(node.right_node, &block)
+    no_block_result.push(node.value)
+    preorder(node.left_node, no_block_result, &block)
+    preorder(node.right_node, no_block_result, &block)
 
     no_block_result unless block_given? 
   end
@@ -220,10 +220,10 @@ class Tree
       return nil
     end
 
-    postorder(node.left_node, &block)
-    postorder(node.right_node, &block)
+    postorder(node.left_node, no_block_result, &block)
+    postorder(node.right_node, no_block_result, &block)
     yield(node) if block_given?
-    no_block_result.push(node.value) unless block_given? 
+    no_block_result.push(node.value)
 
     no_block_result unless block_given? 
   end
@@ -288,12 +288,14 @@ class Tree
 
 end
 
-array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
+# array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
+
+array = Array.new(15) {rand(1..100)}
 
 a_tree = Tree.new(array)
 
 a_tree.pretty_print
 
-a_tree.rebalance!
+puts a_tree.balanced?
 
-a_tree.pretty_print
+puts a_tree.postorder
