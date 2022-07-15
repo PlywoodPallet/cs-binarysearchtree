@@ -30,7 +30,7 @@ class Tree
     #sort array and remove duplicates 
     array = array.sort.uniq
 
-    @root = build_tree(array, 0, array.length-1)
+    @root = build_tree(array)
     
     # p "Sorted Array: #{array.sort.uniq}"
     # p mid = (0+array.length-1)/2
@@ -44,7 +44,7 @@ class Tree
   # Recursion:
   # calculate mid of left subarray and make it root of left subtree of original root
   # calculate mid of right subarray and make it root of left subtree of original root
-  def build_tree(array, array_start, array_end)
+  def build_tree(array, array_start = 0, array_end = array.length-1)
 
     if (array_start>array_end)
       return nil
@@ -283,6 +283,12 @@ class Tree
     left = height(node.left_node) if node.left_node
     right = height(node.right_node) if node.right_node
     (left - right).abs < 2
+  end
+
+  # Balances the current tree. (bang method !)
+  def rebalance!(node = @root)
+    array = inorder(node)
+    @root = build_tree(array)
   end
 
 end
