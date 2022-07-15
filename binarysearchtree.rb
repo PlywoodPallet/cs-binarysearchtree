@@ -277,6 +277,14 @@ class Tree
     return ans
   end
 
+  # checks if tree is balanced: the difference between the heights of left subtree
+  # and right subtree of every node is not more than 1
+  def balanced?(node = root, left = 0, right = 0)
+    left = height(node.left_node) if node.left_node
+    right = height(node.right_node) if node.right_node
+    (left - right).abs < 2
+  end
+
 end
 
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
@@ -286,7 +294,8 @@ a_tree = Tree.new(array)
 a_tree.pretty_print
 
 
-puts a_node = a_tree.find(23)
+# puts a_node = a_tree.find(23)
 
-puts a_tree.balanced?
+# puts a_tree.height(a_node)
 
+a_tree.pretty_print
