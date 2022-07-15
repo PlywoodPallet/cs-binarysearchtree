@@ -274,10 +274,10 @@ class Tree
 
   # checks if tree is balanced: the difference between the heights of left subtree
   # and right subtree of every node is not more than 1
-  def balanced?(node = root, left = 0, right = 0)
-    left = height(node.left_node) if node.left_node
-    right = height(node.right_node) if node.right_node
-    (left - right).abs < 2
+  def balanced?(node = @root, left = 0, right = 0)
+    left = height(node.left_node) if node.left_node != nil
+    right = height(node.right_node) if node.right_node != nil
+    (left.to_i - right.to_i).abs < 2
   end
 
   # Balances the current tree. (bang method !)
@@ -291,11 +291,18 @@ end
 # array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
 array = Array.new(15) {rand(1..100)}
-
 a_tree = Tree.new(array)
 
 a_tree.pretty_print
 
 puts a_tree.balanced?
 
-puts a_tree.postorder
+a_tree.insert(500)
+a_tree.insert(170)
+a_tree.insert(150)
+a_tree.insert(160)
+a_tree.insert(200)
+
+a_tree.pretty_print
+
+puts a_tree.balanced?
