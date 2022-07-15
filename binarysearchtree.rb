@@ -306,3 +306,9 @@ a_tree.insert(200)
 a_tree.pretty_print
 
 puts a_tree.balanced?
+
+a_tree.rebalance!
+
+a_tree.pretty_print
+
+puts a_tree.balanced?
