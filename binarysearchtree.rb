@@ -1,5 +1,3 @@
-require 'pry-byebug'
-
 class Node
   attr_accessor :value, :left_node, :right_node
 
